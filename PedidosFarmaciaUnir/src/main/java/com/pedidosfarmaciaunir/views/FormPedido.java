@@ -4,6 +4,14 @@
  */
 package com.pedidosfarmaciaunir.views;
 
+import com.pedidosfarmaciaunir.models.Medicamento.TipoMedicamento;
+import java.util.Arrays;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.PlainDocument;
+
 /**
  *
  * @author marco
@@ -15,6 +23,35 @@ public class FormPedido extends javax.swing.JPanel {
      */
     public FormPedido() {
         initComponents();
+        
+        String[] nombresMedicamentos = Arrays.stream(TipoMedicamento.values())
+                                       .map(TipoMedicamento::getNombre)
+                                       .toArray(String[]::new);
+    
+        jComboBox1.setModel(new DefaultComboBoxModel<>(nombresMedicamentos));
+
+        PlainDocument doc = (PlainDocument) jTextField1.getDocument();
+        doc.setDocumentFilter(new DocumentFilter() {
+            @Override
+            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) 
+                    throws BadLocationException {
+                if (string == null) return;
+                
+                if (string.matches("[a-zA-Z0-9\\s]*")) {
+                    super.insertString(fb, offset, string, attr);
+                }
+            }
+            
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) 
+                    throws BadLocationException {
+                if (text == null) return;
+                
+                if (text.matches("[a-zA-Z0-9\\s]*")) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        });
     }
 
     /**
@@ -172,23 +209,27 @@ public class FormPedido extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
+    public void limpiarSeleccionDistribuidor() {
+    buttonGroup4.clearSelection();
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup4;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JComboBox<String> jComboBox1;
+    public javax.swing.JButton jButton1;
+    public javax.swing.JButton jButton2;
+    public javax.swing.JCheckBox jCheckBox1;
+    public javax.swing.JCheckBox jCheckBox2;
+    public javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    public javax.swing.JRadioButton jRadioButton1;
+    public javax.swing.JRadioButton jRadioButton2;
+    public javax.swing.JRadioButton jRadioButton3;
+    public javax.swing.JTextField jTextField1;
+    public javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
