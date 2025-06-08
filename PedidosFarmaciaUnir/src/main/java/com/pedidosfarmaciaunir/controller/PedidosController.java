@@ -8,6 +8,8 @@ import com.pedidosfarmaciaunir.models.Medicamento;
 import com.pedidosfarmaciaunir.views.FormPedido;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.StringJoiner;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -34,7 +36,85 @@ public class PedidosController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == view.jButton1) {
             limpiarFormulario();
+        } else if (e.getSource() == view.jButton2) {
+            confirmarPedido();
         }
+    }
+
+    private void confirmarPedido() {
+        String nombreMedicamento = view.jTextField1.getText().trim();
+        if (nombreMedicamento.isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Escriba el nombre del medicamento.", "Error de validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String tipoMedicamento = (String) view.jComboBox1.getSelectedItem();
+
+        String cantidadStr = view.jTextField2.getText().trim();
+        if (cantidadStr.isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Debe llenar este campo.", "Error de validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int cantidad;
+        try {
+            cantidad = Integer.parseInt(cantidadStr);
+            if (cantidad <= 0) {
+                JOptionPane.showMessageDialog(view, "La cantidad debe ser mayor a cero.", "Error de validación", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(view, "La cantidad debe ser un número válido.", "Error de validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String distribuidor = null;
+        if (view.jRadioButton1.isSelected()) {
+            distribuidor = view.jRadioButton1.getText();
+        } else if (view.jRadioButton2.isSelected()) {
+            distribuidor = view.jRadioButton2.getText();
+        } else if (view.jRadioButton3.isSelected()) {
+            distribuidor = view.jRadioButton3.getText();
+        }
+
+        if (distribuidor == null) {
+            JOptionPane.showMessageDialog(view, "Debe seleccionar un distribuidor.", "Error de validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        StringJoiner sucursalJoiner = new StringJoiner(", ");
+        if (view.jCheckBox1.isSelected()) {
+            sucursalJoiner.add(view.jCheckBox1.getText());
+        }
+        if (view.jCheckBox2.isSelected()) {
+            sucursalJoiner.add(view.jCheckBox2.getText());
+        }
+        String sucursal = sucursalJoiner.toString();
+
+        if (sucursal.isEmpty()) {
+            JOptionPane.showMessageDialog(view, "Debe seleccionar al menos una sucursal.", "Error de validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        model.setNombreMedicamento(nombreMedicamento);
+        model.setTipoMedicamento(tipoMedicamento);
+        model.setCantidad(cantidad);
+        model.setDistribuidor(distribuidor);
+        model.setSucursal(sucursal);
+
+        String message = String.format("Pedido confirmado:\n\n" +
+                "Nombre: %s\n" +
+                "Tipo: %s\n" +
+                "Cantidad: %d\n" +
+                "Distribuidor: %s\n" +
+                "Sucursal(es): %s\n",
+                nombreMedicamento, tipoMedicamento, cantidad, distribuidor, sucursal);
+        
+        JOptionPane.showMessageDialog(view, message, "Pedido Confirmado", JOptionPane.INFORMATION_MESSAGE);
+        
+        System.out.println("Pedido realizado para el medicamento: "+nombreMedicamento+" del tipo "+tipoMedicamento+ " cantidad: "+cantidad+" distribuidor: "+distribuidor+" para la sucursal: "+sucursal);
+
+        limpiarFormulario();
     }
     
     private void limpiarFormulario() {
