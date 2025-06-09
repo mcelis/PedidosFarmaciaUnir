@@ -62,9 +62,7 @@ public class FormPedido extends javax.swing.JPanel {
                     return;
                 }
 
-                if (string.matches("[0-9]*")) {
-                    super.insertString(fb, offset, string, attr);
-                }
+                super.insertString(fb, offset, string, attr);
             }
 
             @Override
@@ -74,9 +72,7 @@ public class FormPedido extends javax.swing.JPanel {
                     return;
                 }
 
-                if (text.matches("[0-9]*")) {
-                    super.replace(fb, offset, length, text, attrs);
-                }
+                super.replace(fb, offset, length, text, attrs);
             }
         });
     }
@@ -315,7 +311,7 @@ public class FormPedido extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:z
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
