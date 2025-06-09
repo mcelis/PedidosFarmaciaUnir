@@ -102,15 +102,16 @@ public class PedidosController implements ActionListener {
         model.setDistribuidor(distribuidor);
         model.setSucursal(sucursal);
 
-        String message = String.format("Pedido confirmado:\n\n" +
+        String message = String.format("Revisa los datos del pedido:\n\n" +
                 "Nombre: %s\n" +
                 "Tipo: %s\n" +
                 "Cantidad: %d\n" +
                 "Distribuidor: %s\n" +
                 "Sucursal(es): %s\n",
                 nombreMedicamento, tipoMedicamento, cantidad, distribuidor, sucursal);
+
         
-        JOptionPane.showMessageDialog(view, message, "Pedido Confirmado", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(view, message, "Información del Pedido", JOptionPane.INFORMATION_MESSAGE);
         
         System.out.println("Pedido realizado para el medicamento: "+nombreMedicamento+" del tipo "+tipoMedicamento+ " cantidad: "+cantidad+" distribuidor: "+distribuidor+" para la sucursal: "+sucursal);
 
