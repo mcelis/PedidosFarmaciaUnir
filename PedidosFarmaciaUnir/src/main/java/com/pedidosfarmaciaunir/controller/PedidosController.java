@@ -10,6 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.StringJoiner;
 import javax.swing.JOptionPane;
+import com.pedidosfarmaciaunir.views.ResumenPedido;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -110,10 +113,38 @@ public class PedidosController implements ActionListener {
                 "Sucursal(es): %s\n",
                 nombreMedicamento, tipoMedicamento, cantidad, distribuidor, sucursal);
 
-        
-        JOptionPane.showMessageDialog(view, message, "Información del Pedido", JOptionPane.INFORMATION_MESSAGE);
-        
-        System.out.println("Pedido realizado para el medicamento: "+nombreMedicamento+" del tipo "+tipoMedicamento+ " cantidad: "+cantidad+" distribuidor: "+distribuidor+" para la sucursal: "+sucursal);
+        // Mostrar el resumen del pedido en un nuevo JFrame
+        String medicamentoInfo = String.format("%d unidades del %s %s", cantidad, tipoMedicamento.toLowerCase(), nombreMedicamento.toLowerCase());
+        String direccion = "";
+        if (sucursal.contains("Principal")) {
+            direccion += "Calle de la Rosa n. 28";
+        }
+        if (sucursal.contains("Secundaria")) {
+            if (!direccion.isEmpty()) {
+                direccion += " y para la situada en ";
+            }
+            direccion += "Calle Alcazabilla n. 3";
+        }
+        direccion = "Para la farmacia situada en " + direccion;
+
+        ResumenPedido resumenPanel = new ResumenPedido();
+        resumenPanel.jTextField1.setText("Pedido enviado a: " + distribuidor);
+        resumenPanel.jTextField4.setText("Concepto: " + medicamentoInfo);
+        resumenPanel.jTextField2.setText("Dirección: " + direccion);
+
+        resumenPanel.jButton1.addActionListener(e -> SwingUtilities.getWindowAncestor(resumenPanel).dispose());
+        resumenPanel.jButton2.addActionListener(e -> {
+            System.out.println("Pedido enviado");
+            JOptionPane.showMessageDialog(resumenPanel, "Pedido enviado", "Confirmación", JOptionPane.INFORMATION_MESSAGE);
+            SwingUtilities.getWindowAncestor(resumenPanel).dispose();
+        });
+
+        JFrame frame = new JFrame("Confirmación de Pedido");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.getContentPane().add(resumenPanel);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 
         limpiarFormulario();
     }
