@@ -5,8 +5,11 @@
 package com.pedidosfarmaciaunir.views;
 
 import com.pedidosfarmaciaunir.models.Medicamento.TipoMedicamento;
+import java.awt.Component;
 import java.util.Arrays;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JList;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
@@ -27,8 +30,23 @@ public class FormPedido extends javax.swing.JPanel {
         String[] nombresMedicamentos = Arrays.stream(TipoMedicamento.values())
                                        .map(TipoMedicamento::getNombre)
                                        .toArray(String[]::new);
-    
-        jComboBox1.setModel(new DefaultComboBoxModel<>(nombresMedicamentos));
+        
+        String[] items = new String[nombresMedicamentos.length + 1];
+        items[0] = "Seleccione"; // Default selection
+        System.arraycopy(nombresMedicamentos, 0, items, 1, nombresMedicamentos.length);
+
+        jComboBox1.setModel(new DefaultComboBoxModel<>(items));
+        jComboBox1.setSelectedIndex(0);
+        jComboBox1.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (index == 0) {
+                    c.setEnabled(false); // Disable 'Seleccione'
+                }
+                return c;
+            }
+        });
 
         PlainDocument doc = (PlainDocument) jTextField1.getDocument();
         doc.setDocumentFilter(new DocumentFilter() {

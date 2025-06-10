@@ -52,6 +52,10 @@ public class PedidosController implements ActionListener {
         }
 
         String tipoMedicamento = (String) view.jComboBox1.getSelectedItem();
+        if (tipoMedicamento == null || tipoMedicamento.isEmpty() || tipoMedicamento.equals("Seleccione")) {
+            JOptionPane.showMessageDialog(view, "Debe seleccionar un tipo de medicamento.", "Error de validación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         String cantidadStr = view.jTextField2.getText().trim();
         if (cantidadStr.isEmpty()) {
