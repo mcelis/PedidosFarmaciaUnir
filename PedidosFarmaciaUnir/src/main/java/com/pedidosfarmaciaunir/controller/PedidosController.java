@@ -137,6 +137,7 @@ public class PedidosController implements ActionListener {
             System.out.println("Pedido enviado");
             JOptionPane.showMessageDialog(resumenPanel, "Pedido enviado", "Confirmación", JOptionPane.INFORMATION_MESSAGE);
             SwingUtilities.getWindowAncestor(resumenPanel).dispose();
+            limpiarFormulario();
         });
 
         JFrame frame = new JFrame("Confirmación de Pedido");
@@ -145,8 +146,6 @@ public class PedidosController implements ActionListener {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
-        limpiarFormulario();
     }
     
     private void limpiarFormulario() {
